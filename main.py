@@ -13,5 +13,12 @@ def read_root():
 
 @app.get("/index", response_class=HTMLResponse)
 def get_welcome(request: Request):
-    # Render the "index.html" template
     return templates.TemplateResponse("index.html", {"request": request})
+
+@app.get("/login", response_class=HTMLResponse)
+def get_welcome(request: Request):
+    return templates.TemplateResponse("login.html", {"request": request})
+@app.get("/register", response_class=HTMLResponse)
+def get_welcome(request: Request):
+    return templates.TemplateResponse("register.html", {"request": request})
+
