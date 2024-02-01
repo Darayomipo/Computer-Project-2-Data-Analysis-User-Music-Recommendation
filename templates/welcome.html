@@ -33,14 +33,13 @@
             flex-direction: column;
             align-items: center;
             margin-top: 10px;
-            margin-right: 20px; /* Add spacing between genre containers */
+            margin-right: 20px;
         }
-        /* Add CSS for the genres wrapper to layout genres in a row */
         .genres-wrapper {
             display: flex;
             justify-content: center;
-            flex-wrap: wrap; /* Allows wrapping if the screen is not wide enough */
-            gap: 10px; /* Adds a gap between genre containers */
+            flex-wrap: wrap;
+            gap: 10px;
         }
     </style>
 </head>
@@ -51,11 +50,38 @@
         <div class="genres-wrapper">
             {% for genre in music_genres %}
                 <div class="genre-container">
-                    <img src="https://source.unsplash.com/random/100x100" alt="{{ genre }}">
+                    <!-- Include genre name in the Unsplash URL for unique images -->
+                    <img src="https://source.unsplash.com/featured/?{{ genre }}" alt="{{ genre }}">
                     <span>{{ genre }}</span>
                 </div>
             {% endfor %}
         </div> 
+        <h2>Age Recommendations</h2>
+        <div class="genres-wrapper">
+            {% for genre in music_genres %}
+                <div class="genre-container">
+                    <!-- Include genre name in the Unsplash URL for unique images -->
+                    <img src="https://source.unsplash.com/featured/?{{ genre }}" alt="{{ genre }}">
+                    <span>{{ genre }}</span>
+                </div>
+            {% endfor %}
+        </div>
+        <h2>Location Recommendations</h2>
+        <div class="genres-wrapper">
+            {% for genre in music_genres %}
+                <div class="genre-container">
+                    <!-- Include genre name in the Unsplash URL for unique images -->
+                    <img src="https://source.unsplash.com/featured/?{{ genre }}" alt="{{ genre }}">
+                    <span>{{ genre }}</span>
+                </div>
+            {% endfor %}
+        </div>
+
+
+
+
+
+
     </div>
 </body>
 </html>
