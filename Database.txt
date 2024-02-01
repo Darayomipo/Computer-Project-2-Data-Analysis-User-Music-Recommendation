@@ -1,0 +1,83 @@
+-- Users Table
+CREATE TABLE Users (
+    UserID INTEGER PRIMARY KEY AUTOINCREMENT,
+    Username TEXT NOT NULL,
+    Email TEXT UNIQUE NOT NULL,
+    Age INTEGER,
+    Location TEXT,
+    RegistrationDate DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Songs Table
+CREATE TABLE Songs (
+    SongID INTEGER PRIMARY KEY AUTOINCREMENT,
+    Title TEXT NOT NULL,
+    ArtistID INTEGER,
+    AlbumID INTEGER,
+    Genre TEXT,
+    Duration INTEGER,
+    ReleaseDate DATE,
+    FOREIGN KEY (ArtistID) REFERENCES Artists(ArtistID),
+    FOREIGN KEY (AlbumID) REFERENCES Albums(AlbumID)
+);
+
+-- Artists Table
+CREATE TABLE Artists (
+    ArtistID INTEGER PRIMARY KEY AUTOINCREMENT,
+    Name TEXT NOT NULL,
+    Bio TEXT,
+    Genre TEXT
+);
+
+-- Albums Table
+CREATE TABLE Albums (
+    AlbumID INTEGER PRIMARY KEY AUTOINCREMENT,
+    Title TEXT NOT NULL,
+    ArtistID INTEGER,
+    ReleaseDate DATE,
+    Genre TEXT,
+    FOREIGN KEY (ArtistID) REFERENCES Artists(ArtistID)
+);
+
+-- UserListeningHistory Table
+CREATE TABLE UserListeningHistory (
+    HistoryID INTEGER PRIMARY KEY AUTOINCREMENT,
+    UserID INTEGER,
+    SongID INTEGER,
+    ListenDate DATETIME DEFAULT CURRENT_TIMESTAMP,
+    DurationListened INTEGER,
+    FOREIGN KEY (UserID) REFERENCES Users(UserID),
+    FOREIGN KEY (SongID) REFERENCES Songs(SongID)
+);
+
+-- UserRatings Table
+CREATE TABLE UserRatings (
+    RatingID INTEGER PRIMARY KEY AUTOINCREMENT,
+    UserID INTEGER,
+    SongID INTEGER,
+    Rating INTEGER CHECK(Rating >= 1 AND Rating <= 5),
+    FOREIGN KEY (UserID) REFERENCES Users(UserID),
+    FOREIGN KEY (SongID) REFERENCES Songs(SongID)
+);
+
+-- UserPreferences Table
+CREATE TABLE UserPreferences (
+    PreferenceID INTEGER PRIMARY KEY AUTOINCREMENT,
+    UserID INTEGER,
+    Genre TEXT,
+    ArtistID INTEGER,
+    FOREIGN KEY (UserID) REFERENCES Users(UserID),
+    FOREIGN KEY (ArtistID) REFERENCES Artists(ArtistID)
+);
+
+-- AudioFeatures Table
+CREATE TABLE AudioFeatures (
+    FeatureID INTEGER PRIMARY KEY AUTOINCREMENT,
+    SongID INTEGER,
+    Tempo REAL,
+    Key INTEGER,
+    Energy REAL,
+    Danceability REAL,
+    Valence REAL,
+    FOREIGN KEY (SongID) REFERENCES Songs(SongID)
+);
