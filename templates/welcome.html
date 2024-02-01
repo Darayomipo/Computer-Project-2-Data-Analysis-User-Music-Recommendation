@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Welcome</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .welcome-container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+        }
+        img {
+            width: 100px; 
+            height: 100px; 
+            border-radius: 8px; 
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="welcome-container">
+        <h1>Welcome, {{ username }}!</h1>
+        <h4><a href="https://source.unsplash.com/random">HipHop</a></h4>
+        <h4>
+            {% for genre in music_genres %}
+                <!-- Specify image size directly in the Unsplash URL. Example: 300x200 -->
+                <img src="https://source.unsplash.com/random/300x200" alt="{{ genre }}">
+                <span>{{ genre }}</span>
+            {% endfor %}
+        </h4> 
+    </div>
+</body>
+
+</html>
