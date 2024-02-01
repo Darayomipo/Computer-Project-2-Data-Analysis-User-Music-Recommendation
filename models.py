@@ -29,11 +29,6 @@ class User(Base):
     def get_genres(self):
         return json.loads(self.MusicGenres)
     
-    def get_age(self):
-        return json.loads(self.Age)
-    def get_country(self):
-        return json.loads(self.Country)
-    
         
     
 class Song(Base):

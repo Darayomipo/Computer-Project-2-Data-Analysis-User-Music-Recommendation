@@ -68,8 +68,8 @@ async def login_user(request: Request, username: str = Form(...), password: str 
     db_user = db.query(User).filter(User.Username == username, User.HashedPassword == hashed_password).first()
     if db_user:
         music_genres = db_user.get_genres()
-        age = db_user.get_age()
-        country = db_user.get_country()
+        age = db_user.Age
+        country = db_user.Country
         return templates.TemplateResponse("welcome.html", {"request": request, "username": username, "music_genres": music_genres, "age": age, "country": country})
     else:
         raise HTTPException(status_code=400, detail="Incorrect username or password")
