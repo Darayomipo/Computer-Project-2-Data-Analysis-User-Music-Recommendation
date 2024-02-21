@@ -11,6 +11,7 @@
             align-items: center;
             height: 100vh;
             margin: 0;
+            position: relative;
         }
         .welcome-container {
             background-color: white;
@@ -18,6 +19,26 @@
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             text-align: center;
+        }
+        .logout-button {
+            position: absolute;
+            top: 20px; 
+            right: 20px;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.2s;
+        }
+        .logout-button:hover {
+            background-color: #c82333; 
+            transform: scale(1.05); 
+        }
+        .logout-button:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(220,53,69,.5);
         }
         h1 {
             color: #333;
@@ -41,17 +62,38 @@
             flex-wrap: wrap;
             gap: 10px;
         }
+        .top-songs-button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin-top: 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.2s;
+        }
+        .top-songs-button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05); 
+        }
+        .top-songs-button:focus {
+            outline: none; 
+            box-shadow: 0 0 0 2px rgba(0,123,255,.25);
+        }
     </style>
 </head>
 <body>
+    <button class="logout-button" onclick="logout()">Logout</button>
+    
     <div class="welcome-container">
         <h1>Welcome, {{ username }}!</h1>       
         <h2>Genre Recommendations</h2>
         <div class="genres-wrapper">
             {% for genre in music_genres %}
                 <div class="genre-container">
-                    <!-- Include genre name in the Unsplash URL for unique images -->
-                    <img src="https://source.unsplash.com/featured/?{{ genre }}" alt="{{ genre }}">
+                    <a href="/songs/genre/{{ genre }}" alt="{{ genre }}">
+                        <img src="https://source.unsplash.com/featured/?{{ genre }}" alt="{{ genre }}">
+                    </a>
                     <span>{{ genre }}</span>
                 </div>
             {% endfor %}
@@ -59,28 +101,30 @@
         <h2>Age Recommendations</h2>
         <div class="age-wrapper">
             <div class="age-container">
-                    
-                    <img src="https://source.unsplash.com/featured/?{{ age }}" alt="{{ age }}">
-                    <span>{{ age }}</span>
+                <a href="/users_by_age/{{ age }}" alt="{{ age }}">
+                <img src="https://source.unsplash.com/featured/?{{ age }}" alt="{{ age }}">
+                </a>
+                <span>{{ age }}</span>
             </div>
         </div>
         <h2>Location Recommendations</h2>
         <div class="country-wrapper">
             <div class="country-container">
-                
-                <img src="https://source.unsplash.com/featured/?{{ country }}" alt="{{ country }}">
+                <a href="/users_by_location/{{ country }}" alt="{{ country }}">
+                <img src="https://source.unsplash.com/featured/?{{ country }}" alt="{{ country }}"></a>
                 <span>{{ country }}</span>
+            </div>
         </div>
-
-        </div>
-
-
+        <br>
+        <br>
+        <br>
         <button class="top-songs-button">Top Songs</button>
-
-
-
-
-
     </div>
+    <script>
+        function logout() {
+            // Redirects the user to the login page
+            window.location.href = '/login/';
+        }
+    </script>
 </body>
 </html>

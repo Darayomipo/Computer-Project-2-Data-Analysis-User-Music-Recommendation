@@ -74,7 +74,27 @@ async def login_user(request: Request, username: str = Form(...), password: str 
         return templates.TemplateResponse("welcome.html", {"request": request, "username": username, "music_genres": music_genres, "age": age, "country": country})
     else:
         raise HTTPException(status_code=400, detail="Incorrect username or password")
-
+    
+@app.get("/songs/genre/{genre}", response_class=HTMLResponse)
+async def read_songs_by_genre(request: Request, genre: str, db: Session = Depends(get_db)):
+    # sourcery skip: reintroduce-else, swap-if-else-branches, use-named-expression
+    songs = db.query(Song).filter(Song.Genre == genre).all()
+    if not songs:
         raise HTTPException(status_code=404, detail="Songs not found")
     # Pass the list of songs and the genre to the template
-    return templates.TemplateResponse("genre_detail.html", {"request": request, "songs": songs, "genre": genre})
+    return templates.TemplateResponse("genre_filter.html", {"request": request, "songs": songs, "genre": genre})
+
+@app.get("/users_by_age/{age}", response_class=HTMLResponse)
+async def read_users_by_age(request: Request, age: int, db: Session = Depends(get_db)):
+    users = db.query(User).filter(User.Age == age).all() 
+    if not users:
+        raise HTTPException(status_code=404, detail="Users of this age not found")
+
+    return templates.TemplateResponse("age_filter.html", {"request": request, "users": users, "age": age})
+@app.get("/users_by_location/{location}", response_class=HTMLResponse)
+async def read_users_by_age(request: Request, location: str, db: Session = Depends(get_db)):
+    users = db.query(User).filter(User.Country == location).all() 
+    if not users:
+        raise HTTPException(status_code=404, detail="Users of this location not found")
+
+    return templates.TemplateResponse("location_filter.html", {"request": request, "users": users, "location": location})

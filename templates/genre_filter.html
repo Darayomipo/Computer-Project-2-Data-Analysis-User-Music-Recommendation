@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Genre Detail</title>
+</head>
+<body>
+<h1>Songs in the "{{ genre }}" genre</h1>
+{% if songs %}
+    <p>Number of songs found: {{ songs|length }}</p>
+    <ul>
+    {% for song in songs %}
+        <li> {{ song.Title }} by {{ song.artist.Name }} ({{ song.ReleaseDate }})</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No songs found in this genre.</p>
+{% endif %}
+
+</body>
+</html>

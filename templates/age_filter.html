@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Users at Age {{ age }}</title>
+</head>
+<body>
+<h1>Users at Age {{ age }}</h1>
+
+{% if users %} 
+<p>Number of songs found: {{ users|length }}</p>
+  <ul>
+    {% for user in users %}
+      <li>Id: {{ user.UserID }} Name: {{ user.Username }} Age: {{ user.Age }}</li> 
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>No users found at this age.</p>
+{% endif %}
+
+</body>
+</html>
