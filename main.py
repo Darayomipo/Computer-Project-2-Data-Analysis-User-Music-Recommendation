@@ -8,6 +8,7 @@ import hashlib
 
 # Assuming models.py contains the SQLAlchemy models including User, and SessionLocal for DB session management
 from models import User, SessionLocal, Base
+from models import Song
 
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
@@ -73,3 +74,7 @@ async def login_user(request: Request, username: str = Form(...), password: str 
         return templates.TemplateResponse("welcome.html", {"request": request, "username": username, "music_genres": music_genres, "age": age, "country": country})
     else:
         raise HTTPException(status_code=400, detail="Incorrect username or password")
+
+        raise HTTPException(status_code=404, detail="Songs not found")
+    # Pass the list of songs and the genre to the template
+    return templates.TemplateResponse("genre_detail.html", {"request": request, "songs": songs, "genre": genre})

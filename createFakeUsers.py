@@ -1,3 +1,4 @@
+#ChatGpt and Oluwadarasimi
 from faker import Faker
 import random
 import json
@@ -64,4 +65,4 @@ def add_fake_users_to_database(num_users=10000):
     finally:
         db.close()
 
-add_fake_users_to_database(25)  # Example: Add 25 fake users to the database
+add_fake_users_to_database()  # Example: Add 25 fake users to the database
