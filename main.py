@@ -98,3 +98,11 @@ async def read_users_by_age(request: Request, location: str, db: Session = Depen
         raise HTTPException(status_code=404, detail="Users of this location not found")
 
     return templates.TemplateResponse("location_filter.html", {"request": request, "users": users, "location": location})
+
+
+@app.get("/song/{song_id}", response_class=HTMLResponse)
+async def read_song_details(request: Request, song_id: int, db: Session = Depends(get_db)):
+    song = db.query(Song).filter(Song.SongID == song_id).first()
+    if not song:
+        raise HTTPException(status_code=404, detail="Song not found")
+    return templates.TemplateResponse("song_detail.html", {"request": request, "song": song})

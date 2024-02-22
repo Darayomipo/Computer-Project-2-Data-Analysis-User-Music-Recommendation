@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ song.title }} - Spotify Web Player</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #fff;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+        .song-info {
+            margin-bottom: 20px;
+        }
+        img {
+            border-radius: 8px;
+            width: 400px; /* Adjusted from 300px to 200px */
+            height: 400px; /* Adjusted from 300px to 200px */
+            object-fit: cover; /* Ensures the image covers the area, might crop if not a square */
+        }
+        .play-button {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            background-color: #1db954;
+            border: none;
+            border-radius: 50%;
+            margin: 20px;
+            cursor: pointer;
+        }
+        .play-button::before {
+            content: '►';
+            font-size: 30px;
+            color: #fff;
+            display: inline-block;
+            margin-left: 14px;
+            margin-top: 8px;
+        }
+        /* Add additional styling as needed */
+    </style>
+</head>
+<body>
+    <div class="song-info">
+        <img src="https://source.unsplash.com/featured/?{{ song.Title }}" alt="{{ song.Title }}" >
+        <h1>{{ song.title }}</h1>
+        <p>Artist: {{ song.artist.Name }}</p>
+        <p>Release Date: {{ song.ReleaseDate }}</p>
+        <!-- Add more song details here -->
+    </div>
+    <button class="play-button" onclick="playSong()"></button>
+    
+    <script>
+        function playSong() {
+            // Example function to play music. Implement based on your project requirements.
+            var audio = new Audio('{{ song.audioUrl }}');
+            audio.play();
+        }
+    </script>
+</body>
+</html>

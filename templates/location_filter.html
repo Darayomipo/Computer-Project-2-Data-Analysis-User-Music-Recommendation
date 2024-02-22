@@ -7,11 +7,12 @@
 <body>
 <h1>Users at Location {{ country }}</h1>
 
+
 {% if users %} 
   <p>Number of users found: {{ users|length }}</p>
   <ul>
     {% for user in users %}
-      <li>{{ loop.index }}   Id: {{ user.UserID}}&nbsp;&nbsp;&nbsp;Name: {{ user.Username }}&nbsp;&nbsp;&nbsp;Location: {{ user.Country }}</li>
+      <li> Id: {{ user.UserID}}&nbsp;&nbsp;&nbsp;Name: {{ user.Username }}&nbsp;&nbsp;&nbsp;Location: {{ user.Country }}</li>
     {% endfor %}
   </ul>
 {% else %}
