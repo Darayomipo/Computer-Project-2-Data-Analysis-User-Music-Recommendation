@@ -10,6 +10,7 @@ engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
+
 class User(Base):
     __tablename__ = "users"
     UserID = Column(Integer, primary_key=True, index=True)
@@ -23,12 +24,15 @@ class User(Base):
     RegistrationDate = Column(DateTime)
 
 
+
     def set_genres(self, genres_list):
         self.MusicGenres = json.dumps(genres_list)
 
     def get_genres(self):
         return json.loads(self.MusicGenres)
     
+
+
         
     
 class Song(Base):
@@ -89,6 +93,12 @@ class UserPreferences(Base):
     ArtistID = Column(Integer, ForeignKey('artists.ArtistID'))
     user = relationship("User")
     artist = relationship("Artist")
+    
+    def set_preference(self, user_id, genre, artist_id):
+        self.UserID = user_id
+        self.Genre = genre
+        self.ArtistID = artist_id
+   
 
 class AudioFeatures(Base):
     __tablename__ = 'audiofeatures'
