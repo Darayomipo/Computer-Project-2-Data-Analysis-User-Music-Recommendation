@@ -1,3 +1,6 @@
 {
-    "docwriter.style": "Google"
+    "docwriter.style": "Google",
+    "cSpell.words": [
+        "fastapi"
+    ]
 }

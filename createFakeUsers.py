@@ -42,7 +42,7 @@ def generate_fake_registration_date():
 def hash_password(password):
     return hashlib.sha256(password.encode()).hexdigest()
 
-def add_fake_users_to_database(num_users=10000):
+def add_fake_users_to_database(num_users=100):
     db = SessionLocal()
     try:
         for _ in range(num_users):
@@ -65,4 +65,4 @@ def add_fake_users_to_database(num_users=10000):
     finally:
         db.close()
 
-add_fake_users_to_database()  # Example: Add 25 fake users to the database
+add_fake_users_to_database() 
