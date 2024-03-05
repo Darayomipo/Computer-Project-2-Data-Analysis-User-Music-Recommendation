@@ -3,22 +3,26 @@ from faker import Faker
 import random
 from datetime import datetime
 
+# --- Setup ---
+
 # Create a Faker instance
 fake = Faker()
 
-# Define data generation parameters
+# Data generation parameters
 num_artists = 2000
-num_songs = 10000
+num_songs = 1000
 
-# Define the list of genres
+# List of possible music genres
 genres = ["Jazz", "Pop", "Rock", "Hip Hop", "Afro Beats", "Techno",
           "Amapiano", "Classical", "Electronic", "Country", "R&B", "Blues"]
 
-# Establish a connection to the database ('test.db')
+# --- Database Interaction ---
+
+# Connect to the database (creates 'test.db' if it doesn't exist)
 conn = sqlite3.connect('test.db')
 cursor = conn.cursor()
 
-# Table Creation (add any error handling you deem necessary)
+# Create database tables if they don't already exist 
 cursor.execute('''
     CREATE TABLE IF NOT EXISTS Songs (
         SongID INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -53,22 +57,23 @@ cursor.execute('''
     );
 ''')
 
+# --- Data Insertion ---
+
 # Insert Artists
 for _ in range(num_artists):
     artist_name = fake.name()
     artist_bio = fake.text(max_nb_chars=200)
     artist_genre = random.choice(genres)
-
     cursor.execute("INSERT INTO Artists (Name, Bio, Genre) VALUES (?, ?, ?)",
                    (artist_name, artist_bio, artist_genre))
 
-# Insert Albums
+# Insert Albums 
 album_counter = 0
 for artist_id in range(1, num_artists + 1):
     cursor.execute("SELECT Genre FROM Artists WHERE ArtistID = ?", (artist_id,))
     artist_genre = cursor.fetchone()[0]
 
-    num_albums_for_artist = random.randint(0, 3)  
+    num_albums_for_artist = random.randint(1, 3)  
     for _ in range(num_albums_for_artist):
         album_title = fake.sentence(nb_words=4)
         album_release_date = fake.date_between(start_date='-10y')
@@ -76,28 +81,35 @@ for artist_id in range(1, num_artists + 1):
                        (album_title, artist_id, album_release_date, artist_genre))
         album_counter += 1
 
-# Insert Songs
-for song_id in range(1, num_songs + 1):
+        # Insert at least 7 songs for the album
+        for _ in range(7):
+            song_title = fake.sentence(nb_words=4)
+            song_duration = fake.random_int(min=120, max=360)
+            cursor.execute("INSERT INTO Songs (Title, ArtistID, AlbumID, Genre, Duration, ReleaseDate) VALUES (?, ?, ?, ?, ?, ?)",
+                           (song_title, artist_id, album_counter, artist_genre, song_duration, album_release_date))
+
+            num_songs -= 1  # Decrement the remaining songs needed
+            if num_songs == 0:
+                break  # Exit the song loop if we've reached the target
+
+# Insert remaining songs (if any)
+while num_songs > 0: 
     song_title = fake.sentence(nb_words=4)
     song_duration = fake.random_int(min=120, max=360)
 
     if random.random() < 0.7: 
         album_id = random.randint(1, album_counter)
-        cursor.execute("SELECT Genre, ReleaseDate FROM Albums WHERE AlbumID = ?", (album_id,))
-        song_genre, album_release_str = cursor.fetchone() 
-        album_release_date = datetime.strptime(album_release_str, '%Y-%m-%d').date() 
-        song_release_date = album_release_date  
     else:
         album_id = None
         artist_id = random.randint(1, num_artists)
         cursor.execute("SELECT Genre FROM Artists WHERE ArtistID = ?", (artist_id,))
         song_genre = cursor.fetchone()[0]
-        song_release_date = fake.date_between(start_date='-10y')
 
     cursor.execute("INSERT INTO Songs (Title, ArtistID, AlbumID, Genre, Duration, ReleaseDate) VALUES (?, ?, ?, ?, ?, ?)",
-                   (song_title, artist_id, album_id, song_genre, song_duration, song_release_date))
+                   (song_title, artist_id, album_id, song_genre, song_duration, fake.date_between(start_date='-10y')))
+    num_songs -= 1 
 
-# Commit changes and close 
+# Save changes and close the connection
 conn.commit()
 conn.close()
 
