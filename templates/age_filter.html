@@ -1,22 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Users at Age {{ age }}</title>
+    <meta charset="UTF-8">
+    <title>Genre {{ genre }}</title>
+    <style>
+/* Style Box: Basic Layout */
+.song-box {
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
+.song-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.song-list li {
+    margin-bottom: 10px;
+}
+
+.genre-item {
+    background-color: #f2f2f2;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+/* Style Box: Clickable Items */
+.song-list li a {
+    display: block;
+    text-decoration: none;
+    color: black;
+    padding: 10px;
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.song-list li a:hover, .song-list li a:focus {
+    background-color: #e9e9e9;
+    border-color: #bbb;
+    text-decoration: none;
+}
+
+    </style>
 </head>
 <body>
-<h1>Users at Age {{ age }}</h1>
-
-{% if users %} 
-<p>Number of songs found: {{ users|length }}</p>
-  <ul>
-    {% for user in users %}
-      <li>Id: {{ user.UserID }} Name: {{ user.Username }} Age: {{ user.Age }}</li> 
-    {% endfor %}
-  </ul>
-{% else %}
-  <p>No users found at this age.</p>
-{% endif %}
-
-</body>
+    <h1>Songs in the {{ age }} AGE</h1>
+    {% if songs %}
+        <p>Number of songs found: {{ songs|length }}</p>
+        <div class="song-box">
+            <ul class="song-list">
+            {% for song in songs %}
+                <li><a href="/song/{{ song.SongID }}" alt="View details for {{ song.Title }}">{{ song.Title }} by {{ song.artist.Name }} ( {{song.Genre}})({{ song.ReleaseDate }})</a></li>
+            {% endfor %}
+            </ul>
+        </div>
+    {% else %}
+        <p>No songs found in this genre.</p>
+    {% endif %}
+    </body>
+    
 </html>

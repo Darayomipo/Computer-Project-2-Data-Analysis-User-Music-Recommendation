@@ -9,7 +9,7 @@ from datetime import datetime
 fake = Faker()
 
 # Data generation parameters
-num_artists = 2000
+num_artists = 500
 num_songs = 1000
 
 # List of possible music genres

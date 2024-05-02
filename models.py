@@ -73,6 +73,7 @@ class UserListeningHistory(Base):
     SongID = Column(Integer, ForeignKey('songs.SongID'))
     ListenDate = Column(DateTime, default=datetime.now)
     DurationListened = Column(Integer)
+    Age = Column(Integer)
     user = relationship("User")
     song = relationship("Song")
 

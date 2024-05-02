@@ -1,13 +1,17 @@
 from typing import List
-from datetime import datetime
+
+from collections import defaultdict
+from datetime import datetime, timedelta
 from fastapi import FastAPI, Depends, Request, Form, HTTPException
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session,joinedload
 import hashlib
+from pydantic import BaseModel
+from datetime import datetime
 
 # Assuming models.py contains the SQLAlchemy models including User, and SessionLocal for DB session management
-from models import User, SessionLocal, Base
+from models import User, SessionLocal, Base, UserListeningHistory
 from models import Song
 
 app = FastAPI()
@@ -84,20 +88,50 @@ async def read_songs_by_genre(request: Request, genre: str, db: Session = Depend
     # Pass the list of songs and the genre to the template
     return templates.TemplateResponse("genre_filter.html", {"request": request, "songs": songs, "genre": genre})
 
+@app.get("/recommendations/{user_id}", response_class=HTMLResponse)
+async def recommend_songs(request: Request, user_id: int, db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.UserID == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    # Assuming genres are stored as a comma-separated string
+    genres = user.MusicGenres.split(',')
+    recommended_songs = db.query(Song).filter(Song.Genre.in_(genres)).limit(10).all()
+
+    if not recommended_songs:
+        raise HTTPException(status_code=404, detail="No songs found for the user's preferences")
+
+    return templates.TemplateResponse("recommendations.html", {"request": request, "songs": recommended_songs, "user": user})
+
+
+
+
 @app.get("/users_by_age/{age}", response_class=HTMLResponse)
-async def read_users_by_age(request: Request, age: int, db: Session = Depends(get_db)):
-    users = db.query(User).filter(User.Age == age).all() 
-    if not users:
-        raise HTTPException(status_code=404, detail="Users of this age not found")
+async def read_songs_by_user_age(request: Request, age: int, db: Session = Depends(get_db)):
+    songs = db.query(Song).join(UserListeningHistory, UserListeningHistory.SongID == Song.SongID)\
+                          .join(User, User.UserID == UserListeningHistory.UserID)\
+                          .filter(User.Age == age).all()
 
-    return templates.TemplateResponse("age_filter.html", {"request": request, "users": users, "age": age})
+    if not songs:
+        message = f"No users found at this age: {age}"
+        return templates.TemplateResponse("age_filter.html", {"request": request, "songs": [], "age": age, "message": message})
+
+    return templates.TemplateResponse("age_filter.html", {"request": request, "songs": songs, "age": age, "message": ""})
+
+
 @app.get("/users_by_location/{location}", response_class=HTMLResponse)
-async def read_users_by_age(request: Request, location: str, db: Session = Depends(get_db)):
-    users = db.query(User).filter(User.Country == location).all() 
-    if not users:
-        raise HTTPException(status_code=404, detail="Users of this location not found")
+async def read_songs_by_location(request: Request, location: str, db: Session = Depends(get_db)):
+    songs = (db.query(Song)
+             .join(UserListeningHistory, UserListeningHistory.SongID == Song.SongID)
+             .join(User, User.UserID == UserListeningHistory.UserID)
+             .filter(User.Country == location)
+             .all())
 
-    return templates.TemplateResponse("location_filter.html", {"request": request, "users": users, "location": location})
+    if not songs:
+        message = f"No songs found for users in this location: {location}"
+        return templates.TemplateResponse("location_filter.html", {"request": request, "songs": [], "location": location, "message": message})
+
+    return templates.TemplateResponse("location_filter.html", {"request": request, "songs": songs, "location": location, "message": ""})
 
 
 @app.get("/song/{song_id}", response_class=HTMLResponse)
@@ -106,3 +140,5 @@ async def read_song_details(request: Request, song_id: int, db: Session = Depend
     if not song:
         raise HTTPException(status_code=404, detail="Song not found")
     return templates.TemplateResponse("song_detail.html", {"request": request, "song": song})
+
+
