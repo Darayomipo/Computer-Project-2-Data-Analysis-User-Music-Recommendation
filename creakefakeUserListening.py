@@ -1,3 +1,4 @@
+#This script was developed with the support of advanced AI tools alongside my contributions in detailing the specifications and requirements.
 from datetime import datetime, timedelta
 import json
 import random
@@ -47,7 +48,9 @@ def create_user_listening_histories(db_session):
                         SongID=song.SongID,
                         ListenDate=listen_date,
                         DurationListened=duration_listened,
-                        Age=user.Age  # Assuming the `User` model has an `Age` attribute
+                        Age=user.Age,
+                        UserLocation=user.Country,  # Assuming User model has a Country attribute
+                        SongGenre=song.Genre  # Directly using the genre of the chosen song
                     )
 
                     db_session.add(history)

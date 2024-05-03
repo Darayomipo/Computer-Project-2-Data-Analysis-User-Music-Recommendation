@@ -1,4 +1,4 @@
-#ChatGpt and Oluwadarasimi
+#This script was developed with the support of advanced AI tools alongside my contributions in detailing the specifications and requirements.
 from faker import Faker
 import random
 import json

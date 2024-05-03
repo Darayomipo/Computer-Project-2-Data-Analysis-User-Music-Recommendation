@@ -1,3 +1,4 @@
+#This script was developed with the support of advanced AI tools alongside my contributions in detailing the specifications and requirements.
 import sqlite3
 from faker import Faker
 import random
@@ -14,7 +15,7 @@ num_songs = 1000
 
 # List of possible music genres
 genres = ["Jazz", "Pop", "Rock", "Hip Hop", "Afro Beats", "Techno",
-          "Amapiano", "Classical", "Electronic", "Country", "R&B", "Blues"]
+          "Amapiano", "Classical", "Electronic", "Country", "RNB", "Blues"]
 
 # --- Database Interaction ---
 

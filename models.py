@@ -1,3 +1,9 @@
+# Disclaimer
+# This project was developed with assistance from various external resources to ensure accuracy and 
+# comprehensiveness. Notably, I utilized guidance and support from OpenAI's ChatGPT for advanced coding techniques and theoretical
+# insights. Additionally, educational resources such as GeeksforGeeks.org were consulted for specific programming challenges and 
+# best practices. The integration of these resources was crucial in enhancing the quality and reliability of the work presented.
+
 import json
 from sqlalchemy import DateTime
 from datetime import datetime
@@ -74,6 +80,8 @@ class UserListeningHistory(Base):
     ListenDate = Column(DateTime, default=datetime.now)
     DurationListened = Column(Integer)
     Age = Column(Integer)
+    UserLocation = Column(String)  # New field for storing user location
+    SongGenre = Column(String)  # New field for storing song genre
     user = relationship("User")
     song = relationship("Song")
 
