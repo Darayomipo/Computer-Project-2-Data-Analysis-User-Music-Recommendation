@@ -1,1 +1,5 @@
-jinja2>=2.11.0
+python
+fastapi 
+sqlalchemy 
+uvicorn 
+jinja2

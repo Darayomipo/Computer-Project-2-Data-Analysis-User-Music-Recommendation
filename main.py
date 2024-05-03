@@ -7,7 +7,7 @@ from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session,joinedload
 import hashlib
-from pydantic import BaseModel
+
 from datetime import datetime
 
 # Assuming models.py contains the SQLAlchemy models including User, and SessionLocal for DB session management
